@@ -1,0 +1,51 @@
+/* *{
+    margin: 0;
+    padding: 0;
+    font-family: 'Cinzel', serif;
+} */
+
+.container {
+    border: 2px solid black;
+    padding: 30px;
+}
+
+.choices {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    grid-gap: 10px;
+    text-align: center;
+    margin-top: 10px;
+}
+
+
+.choices button {
+    padding: 20px;
+    font-size: 2em;
+    border: 3px solid black;
+    box-shadow: 2px 2px 2px 2px;
+    transition: all 0.5s ease;
+    border-radius: 50px;
+}
+
+.choices button:hover {
+    font-size: 2.2em;
+}
+
+.choices h2 {
+    padding: 10px;
+    margin: auto;
+    margin: auto;
+}
+
+.dropdown-item:hover {
+    cursor: pointer;
+}
+
+.playReset {
+    color: black;
+    margin-top: 20px;
+}
+
+button {
+    border-radius: 10px;
+}
