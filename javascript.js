@@ -1,7 +1,5 @@
-// const start = document.getElementById('start'); //start button
-// const replay = document.getElementById('replay'); //replace button
+
 const choices = document.querySelector('.choices'); //all button choices
-const scoreboardSelector = document.querySelector(".scoreboard");
 
 //each scale button node
 const cMajorScale = document.getElementById('Cmaj');
@@ -44,33 +42,35 @@ const a2 = new Audio('a2.mp3');
 const aSharp2 = new Audio('sharp2.mp3');
 const b2 = new Audio("b2.mp3");
 
-//structure of note strings and its audio
+//structure of note names and its audio file
 const theNotes = {
     notes: ["C", "C#/Db", "D", "D#/Eb", "E", "F", "F#/Gb", "G", "G#/Ab", "A", "A#/Bb", "B", "C2", "C#/Db 2", "D2", "D#/Eb 2", "E2", "F2", "F#/Gb 2", "G2", "G#/Ab 2", "A2", "A#/Bb 2", "B2"],
     notesAudio: [c1, cSharp1, d1, dSharp1, e1, f1, fSharp1, g1, gSharp1, a1, aSharp1, b1, c2, cSharp2, d2, dSharp2, e2, f2, fSharp2, g2, gSharp2, a2, aSharp2, b2]
 };
 
-//intiallizes random note that constantly changes when play/replay is played
+//sets random note that will constantly change when playReplayReset() or reset() is called
+// let newScale = [];
 let randomNote = undefined;
-let newScale = [];
 let score = 0;
 let total = 0;
 
+let newScale = [];
+
 
 const majorScale = (scale) => {
-    //when a new scale is clicked, checks for previous clicked scale and removes it
+    //when a new scale is clicked, checks for previous displayed scale elements and removes it
     if (choices.childElementCount > 0) {
         for (let i = 0; i <= 10; i++){
         choices.firstElementChild.remove();
         randomNote = undefined;
+    }
+        
         score = 0;
         total = 0;
-    }
 }
-    //initiallizes and pushes 8 major scale notes audio files into an new array, based off index of scale and major scale formula "W-W-H-W-W-W-H"
+    //declares a scale array and pushes 8 major scale notes audio files into the new array, based off index of scale and major scale formula "W-W-H-W-W-W-H"
     newScale = [];
     const indexScale = theNotes.notesAudio.indexOf(scale);
-    // console.log(indexScale);
     newScale.push(scale);
     newScale.push(theNotes.notesAudio[indexScale + 2]);
     newScale.push(theNotes.notesAudio[indexScale + 4]);
@@ -80,7 +80,7 @@ const majorScale = (scale) => {
     newScale.push(theNotes.notesAudio[indexScale + 11]);
     newScale.push(theNotes.notesAudio[indexScale + 12]);
 
-    //cycles through newly created newScale array and adds an HTML button along with its class ~btn-button~ and adds inner text to that button based off the index of the audio file.
+    //cycles through newly created newScale array and adds an HTML button along with its class ~btn-button.~ Then adds inner text to that button based off the index of the audio file.
     newScale.forEach( (note) => {
         const newButton = document.createElement('button');
         newButton.classList.add("btn-primary");
@@ -105,10 +105,10 @@ const majorScale = (scale) => {
     playReplayReset();
 }
 
-const playReplayReset = () => {
-    //adds play and reset buttons.  additionally gives them inner text and functionality
+const playReplayReset = () => { 
+    //creates play and reset buttons, and appends it to choices.  additionally gives them inner text and event listeners
     const playReplayButton = document.createElement('button');
-    const resetButton = document.createElement('button');
+    const resetButton = document.createElement('button'); 
     const scoreKeeper = document.createElement('h2');
     playReplayButton.innerText = "Play/Replay"
     resetButton.innerText = "Reset"
@@ -119,30 +119,40 @@ const playReplayReset = () => {
 
     //when play button if clicked, checks if note if randomNote is defined.  If not, it is given a random number based from the notes of scale
     playReplayButton.addEventListener("click", () => {
-
+        
         if (randomNote === undefined)
-        {
-            randomNote = Math.floor(Math.random() * 8);
-        }
+            randomNote = Math.floor(Math.random() * 8); //assigns random note a number when clicked for first time
+
         newScale[randomNote].play();
-        newScale[randomNote].currentTime = 0;
+        newScale[randomNote].currentTime = 0; //setting current time to 0 allows for instant repeat plays
+    })
+
+    resetButton.addEventListener("click", () => {
+        randomNote = undefined;
+        reset(false);
+        score = 0; 
+        total = 0; 
+        choices.lastChild.innerText = `${score}/${total}`; 
+
     })
 }
 
-const reset = () => 
+const reset = (resetNote = true) => 
 {
     const buttonReset = document.querySelectorAll('.choices button');
     buttonReset.forEach((choice) => 
     {
         choice.classList.replace("btn-danger", "btn-primary");
     })
-    newScale[randomNote].pause();
-    randomNote = Math.floor(Math.random() * 8);
-    newScale[randomNote].play();
+    if (resetNote === true)
+    {
+        newScale[randomNote].pause();
+        randomNote = Math.floor(Math.random() * 8);
+        newScale[randomNote].play();
+    }
 
 }
 
-// const resetGame 
 
 
 cMajorScale.addEventListener('click', majorScale.bind(this, c1));
@@ -153,9 +163,8 @@ eMajorScale.addEventListener('click', majorScale.bind(this, e1));
 fMajorScale.addEventListener('click', majorScale.bind(this, f1));
 fSharpMajorScale.addEventListener('click', majorScale.bind(this, fSharp1));
 gMajorScale.addEventListener('click', majorScale.bind(this, g1));
-gSharpMajorScale.addEventListener('click', majorScale.bind(this, gSharp1));
+gSharpMajorScale.addEventListener('click', majorScale.bind(this, gSharp1)); 
 aMajorScale.addEventListener('click', majorScale.bind(this, a1));
 aSharpMajorScale.addEventListener('click', majorScale.bind(this, aSharp1));
-bMajorScale.addEventListener('click', majorScale.bind(this, b1));
+bMajorScale.addEventListener('click', majorScale.bind(this, b1)); 
 
-    
